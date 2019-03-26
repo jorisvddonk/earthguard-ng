@@ -1,4 +1,5 @@
 extends Sprite
+signal shoot
 
 var velocity = Vector2(0,0)
 export var acceleration = 230
@@ -14,3 +15,7 @@ func _process(delta):
 		rotation += rotationSpeed*delta
 		
 	position += velocity * delta
+	
+	if Input.is_key_pressed(KEY_SPACE):
+		emit_signal("shoot")
+
