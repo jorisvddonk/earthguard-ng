@@ -13,6 +13,9 @@ func _process(delta):
 		rotation -= rotationSpeed*delta
 	if Input.is_key_pressed(KEY_D):
 		rotation += rotationSpeed*delta
+	
+	if velocity.length() > maxSpeed:
+		velocity = velocity.normalized() * maxSpeed
 		
 	position += velocity * delta
 	
