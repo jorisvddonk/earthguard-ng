@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://content/ship.png" type="Texture" id=2]
 [ext_resource path="res://PlayerShip.gd" type="Script" id=3]
+[ext_resource path="res://parallax_1_0.png" type="Texture" id=4]
+[ext_resource path="res://parallax_2.png" type="Texture" id=5]
+[ext_resource path="res://parallax_4.png" type="Texture" id=6]
+[ext_resource path="res://parallax_3.png" type="Texture" id=7]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -12,3 +16,38 @@ position = Vector2( 117, 104 )
 texture = ExtResource( 2 )
 script = ExtResource( 3 )
 
+[node name="Camera2D" type="Camera2D" parent="PlayerShip"]
+current = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="PlayerShip"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="PlayerShip/ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+motion_mirroring = Vector2( 1600, 1600 )
+
+[node name="Sprite" type="Sprite" parent="PlayerShip/ParallaxBackground/ParallaxLayer"]
+texture = ExtResource( 4 )
+centered = false
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="PlayerShip/ParallaxBackground"]
+motion_scale = Vector2( 0.3, 0.3 )
+motion_mirroring = Vector2( 1349, 943 )
+
+[node name="Sprite" type="Sprite" parent="PlayerShip/ParallaxBackground/ParallaxLayer2"]
+texture = ExtResource( 5 )
+centered = false
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="PlayerShip/ParallaxBackground"]
+motion_scale = Vector2( 0.6, 0.6 )
+motion_mirroring = Vector2( 1389, 941 )
+
+[node name="Sprite" type="Sprite" parent="PlayerShip/ParallaxBackground/ParallaxLayer3"]
+texture = ExtResource( 7 )
+centered = false
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="PlayerShip/ParallaxBackground"]
+motion_mirroring = Vector2( 1391, 953 )
+
+[node name="Sprite" type="Sprite" parent="PlayerShip/ParallaxBackground/ParallaxLayer4"]
+texture = ExtResource( 6 )
+centered = false
