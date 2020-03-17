@@ -1,6 +1,6 @@
 extends Sprite
 
-var life = 1
+var life = 10
 var velocity = Vector2(0,-300)
 
 func _ready():
