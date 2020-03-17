@@ -28,9 +28,8 @@ func _process(delta):
 	
 	target = player.position
 	var tgtError = target - position
-	var time_required = tgtError.length() / possible_bullet_velocity
 	
-	target = player.position + (player.velocity * time_required)
+	target = self.intercept(position, possible_bullet_velocity, player.position, player.velocity)
 	
 	tgtError = target - position	
 	xpid.setError(tgtError.x)
@@ -46,7 +45,7 @@ func _process(delta):
 	if thrust_vec.length() > 0:
 		# Turn towards x_thrust/y_thrust
 		if thrust_angle != NAN:
-			if thrust_angle < PI - OFFSET_ALLOWED_BACKWARDS &&	thrust_angle > -PI + OFFSET_ALLOWED_BACKWARDS:
+			if thrust_angle < PI - OFFSET_ALLOWED_BACKWARDS && thrust_angle > -PI + OFFSET_ALLOWED_BACKWARDS:
 				self.rotate_(thrust_angle)
 			else:
 				sign_ = -1
@@ -60,10 +59,6 @@ func _process(delta):
 		if thrust_angle < OFFSET_ALLOWED && thrust_angle > -OFFSET_ALLOWED:
 			var actual_thrust = clamp(thrust_vec.length() * sign_ * 500, -1, 1)
 			self.thrust(actual_thrust, delta) # todo lower/max thrust?
-	else:
-		# If we have a small thrust vector, let's just point towards the enemy ship..
-		# self.rotate(rot); # ?? todo re-add?
-		pass
 
 	if velocity.length() > maxSpeed:
 		velocity = velocity.normalized() * maxSpeed
@@ -75,8 +70,8 @@ func _process(delta):
 	update() # redraw
 
 func thrust(vel, delta):
-	pass # temporarily disabled
-	# velocity += Vector2(0, -acceleration*delta*vel).rotated(rotation)
+	#pass # temporarily disabled
+	velocity += Vector2(0, -acceleration*delta*vel).rotated(rotation)
 
 func rotate_(angle):
 	rotation += clamp(angle, -PI * 0.01, PI * 0.01)
@@ -89,3 +84,18 @@ func _draw():
 	if target != null:
 		draw_set_transform(inv.origin, inv.get_rotation(), Vector2.ONE) # undo global rotation and position
 		draw_circle(target, 10, Color.red)
+
+func intercept(shooter: Vector2, bullet_speed: float, target: Vector2, target_velocity: Vector2):
+	var displacement = shooter - target
+	var a = bullet_speed * bullet_speed - target_velocity.dot(target_velocity)
+	var b = -2 * target_velocity.dot(displacement)
+	var c = -displacement.dot(displacement)
+	var lrg = largest_root_of_quadratic_equation(a, b, c)
+	if lrg == NAN or lrg == null:
+	  return null
+	else:
+	  var interception_world = target + (target_velocity * lrg)
+	  return interception_world
+
+func largest_root_of_quadratic_equation(a, b, c):
+	return (b + sqrt(b * b - 4 * a * c)) / (2 * a)

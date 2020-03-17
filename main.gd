@@ -7,7 +7,6 @@ func _ready():
 	$Ship.connect("shoot", self, "_on_Ship_shoot", [$Ship])
 
 func _on_Ship_shoot(targetpos, ship):
-	print(ship, targetpos)
 	var bullet = Bullet.instance()
 	var rot = ship.rotation
 	if targetpos != null:
