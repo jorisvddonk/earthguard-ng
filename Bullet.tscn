@@ -6,4 +6,3 @@
 [node name="Bullet" type="Sprite"]
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
-
