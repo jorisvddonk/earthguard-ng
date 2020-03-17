@@ -59,6 +59,3 @@ func setError(err: float):
 
 func reset():
 	integralError = 0
-
-func update(current: float, target: float):
-	setError(target - current)

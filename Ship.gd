@@ -5,6 +5,7 @@ var xpid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
 var ypid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
 const OFFSET_ALLOWED = 0.0872664626 # 5 degrees
 const OFFSET_ALLOWED_BACKWARDS = 0.436332313 # 25 degrees
+var thrust_vec = null
 
 var velocity = Vector2(0,0)
 export var acceleration = 230
@@ -12,7 +13,7 @@ export var rotationSpeed = 3
 export var maxSpeed = 300
 
 func _ready():
-	pass # Replace with function body.
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -22,7 +23,7 @@ func _process(delta):
 	xpid.step()
 	ypid.step()
 	
-	var thrust_vec = Vector2(-xpid.getError(), -ypid.getError())
+	thrust_vec = Vector2(-xpid.getError(), -ypid.getError())
 	var sign_ = 1
 	var thrust_angle = Vector2.UP.rotated(rotation).angle_to(thrust_vec)
 	
@@ -54,10 +55,16 @@ func _process(delta):
 		
 	position += velocity * delta
 
-	#print(xpid.getError())
+	update() # redraw
 
 func thrust(vel, delta):
 	velocity += Vector2(0, -acceleration*delta*vel).rotated(rotation)
 
 func rotate_(angle):
 	rotation += clamp(angle, -PI * 0.01, PI * 0.01)
+
+func _draw():
+	if thrust_vec != null:
+		var inv = get_global_transform().inverse()
+		draw_set_transform(Vector2.ZERO, inv.get_rotation(), Vector2.ONE) # undo global rotation
+		draw_line(Vector2.ZERO, thrust_vec, Color.red, 2.0)
