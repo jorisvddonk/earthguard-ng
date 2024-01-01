@@ -14,12 +14,12 @@ var thrust_vec = null
 var target = null
 
 var velocity = Vector2(0,0)
-export var acceleration = 230
-export var rotationSpeed = 3
-export var maxSpeed = 300
+@export var acceleration = 230
+@export var rotationSpeed = 3
+@export var maxSpeed = 300
 
 func _ready():
-	self.connect("shoot", self, "_on_shoot")
+	self.connect("shoot", Callable(self, "_on_shoot"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -80,10 +80,10 @@ func _draw():
 	var inv = get_global_transform().inverse()
 	if thrust_vec != null:
 		draw_set_transform(Vector2.ZERO, inv.get_rotation(), Vector2.ONE) # undo global rotation
-		draw_line(Vector2.ZERO, thrust_vec, Color.red, 2.0)
+		draw_line(Vector2.ZERO, thrust_vec, Color.RED, 2.0)
 	if target != null:
 		draw_set_transform(inv.origin, inv.get_rotation(), Vector2.ONE) # undo global rotation and position
-		draw_circle(target, 10, Color.red)
+		draw_circle(target, 10, Color.RED)
 
 func intercept(shooter: Vector2, bullet_speed: float, target: Vector2, target_velocity: Vector2):
 	var displacement = shooter - target

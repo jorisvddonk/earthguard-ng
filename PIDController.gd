@@ -16,7 +16,7 @@ var retError : float = 0
 func _ready():
 	pass # Replace with function body.
 
-func _init(var p, var i, var d, var minI, var maxI, var minCapI, var maxCapI):
+func _init(p, i, d, minI, maxI, minCapI, maxCapI):
 	kP = p
 	kI = i
 	kD = d

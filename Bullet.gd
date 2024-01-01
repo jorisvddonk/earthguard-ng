@@ -1,4 +1,4 @@
-extends Sprite
+extends Sprite2D
 
 var life = 10
 var velocity = Vector2(0,-300)
