@@ -37,13 +37,13 @@ func _draw():
 
 func get_star_color(starclass: String) -> Color:
 	match starclass:
-		"O": return Color.BLUE
-		"B": return Color(0.5, 0.5, 1.0)  # Light blue
-		"A": return Color.WHITE
-		"F": return Color(1.0, 1.0, 0.8)  # Pale yellow
-		"G": return Color.YELLOW
-		"K": return Color.ORANGE
-		"M": return Color.RED
+		"O": return Color(0x9B/255.0, 0xB0/255.0, 0xFF/255.0)  # #9BB0FF
+		"B": return Color(0xBB/255.0, 0xCC/255.0, 0xFF/255.0)  # #BBCCFF
+		"A": return Color(0xFB/255.0, 0xF8/255.0, 0xFF/255.0)  # #FBF8FF
+		"F": return Color(0xFF/255.0, 0xFF/255.0, 0xED/255.0)  # #FFFFED
+		"G": return Color.YELLOW  # #FFFF00
+		"K": return Color(0xFF/255.0, 0x98/255.0, 0x33/255.0)  # #FF9833
+		"M": return Color(0xD2/255.0, 0x00/255.0, 0x33/255.0)  # #D20033
 		_: return Color.GRAY
 
 func set_starmap(new_starmap: Starmap):
