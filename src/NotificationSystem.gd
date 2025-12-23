@@ -52,8 +52,8 @@ func update_display():
 	for child in notification_bar.get_children():
 		child.queue_free()
 	
-	# Add new notification buttons
-	for i in range(notifications.size()):
+	# Add new notification buttons (newest first for right alignment)
+	for i in range(notifications.size()-1, -1, -1):
 		var notif = notifications[i]
 		var button = TextureButton.new()
 		button.texture_normal = create_circle_texture(get_color_for_type(notif.type))
