@@ -2,7 +2,10 @@ extends Sprite2D
 
 class_name Planet
 
+const Inventory = preload("res://src/Inventory.gd")
+
 var planet_name = "SomePlanet"
+var supplies: Dictionary = {}
 
 func _init(options = {}):
 	# Generate orbit
@@ -15,9 +18,16 @@ func _init(options = {}):
 	centered = true
 	
 	planet_name = options.get("name", "SomePlanet")
+	
+	# Initialize supplies
+	for cat in Inventory.CATEGORIES:
+		supplies[cat] = randi() % 100 + 10
 
 func _to_string():
 	return planet_name
 
 func tooltip_string():
 	return planet_name
+
+func get_supplies() -> Dictionary:
+	return supplies.duplicate()

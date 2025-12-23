@@ -5,6 +5,7 @@ class_name Ship
 signal shoot
 signal hit
 
+const Inventory = preload("res://src/Inventory.gd")
 var Bullet = load("res://src/Bullet.tscn")
 var PIDController = load("res://src/PIDController.gd")
 
@@ -17,6 +18,9 @@ var velocity = Vector2(0,0)
 @export var acceleration = 230
 @export var rotationSpeed = 3
 @export var maxSpeed = 300
+@export var cargo_capacity: int = 100
+
+var inventory: Inventory
 
 func _ready():
 	self.connect("shoot", Callable(self, "_on_shoot"))
@@ -29,6 +33,9 @@ func _ready():
 	subsystems.engine = EngineSubsystem.new(self)
 	subsystems.fueltanks = FueltanksSubsystem.new(self)
 	subsystems.sensor = SensorSubsystem.new(self)
+	
+	# Initialize inventory
+	inventory = Inventory.new()
 
 func get_subsystems() -> Dictionary:
 	return subsystems
@@ -94,3 +101,18 @@ func intercept(shooter: Vector2, bullet_speed: float, target: Vector2, target_ve
 
 func largest_root_of_quadratic_equation(a, b, c):
 	return (b + sqrt(b * b - 4 * a * c)) / (2 * a)
+
+func purchase_from_planet(planet: Planet, category: String, amount: int) -> bool:
+	if not Inventory.CATEGORIES.has(category):
+		return false
+	var available = planet.supplies.get(category, 0)
+	if available < amount:
+		return false
+	if not inventory.can_add(category, amount, cargo_capacity):
+		return false
+	planet.supplies[category] -= amount
+	inventory.add_item(category, amount)
+	return true
+
+func get_inventory() -> Inventory:
+	return inventory
