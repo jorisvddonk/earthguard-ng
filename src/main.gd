@@ -7,6 +7,7 @@ var Jumpgate = load("res://src/Jumpgate.gd")
 var Ship = load("res://src/Ship.tscn")
 var Task = load("res://src/Task.gd")
 var Target = load("res://src/Target.gd")
+var DirectionalIndicator = load("res://src/DirectionalIndicator.gd")
 
 var starmap
 var current_star
@@ -36,6 +37,11 @@ func _ready():
 	var camera = Camera2D.new()
 	player_ship.add_child(camera)
 	camera.make_current()
+	
+	# Add directional indicator
+	var indicator = Node2D.new()
+	indicator.script = DirectionalIndicator
+	player_ship.add_child(indicator)
 
 func add_planets_and_jumpgates():
 	for planet in current_star.planets:
