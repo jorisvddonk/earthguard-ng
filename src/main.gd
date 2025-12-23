@@ -24,6 +24,7 @@ func _ready():
 	player_ship = $PlayerShip
 	player_ship.position = Vector2(200, 300)
 	player_ship.texture = load("res://content/ship.png")
+	player_ship.z_index = 1
 	
 	# Connect shooting
 	player_ship.connect("shoot", Callable(self, "_on_Ship_shoot").bind(null, player_ship))
@@ -39,8 +40,10 @@ func _ready():
 func add_planets_and_jumpgates():
 	for planet in current_star.planets:
 		add_child(planet)
+		planet.z_index = 0
 	for jumpgate in current_star.jumpgates:
 		add_child(jumpgate)
+		jumpgate.z_index = 0
 
 func spawn_ai_ships():
 	for i in range(30):
@@ -67,6 +70,7 @@ func spawn_random_ship():
 		ship_scene.get_node("Sprite2D").texture = load("res://content/" + gfxID + ".png")
 	
 	add_child(ship_scene)
+	ship_scene.z_index = 1
 	
 	# Connect signals
 	ship_scene.get_subsystems().autopilot.connect("complete", Callable(self, "_on_autopilot_complete").bind(ship_scene))
@@ -131,6 +135,7 @@ func _on_Ship_shoot(targetpos, ship):
 	bullet.position = ship.position
 	bullet.rotation = ship.rotation
 	bullet.shooter = ship  # Set the shooter for collision
+	bullet.z_index = 2
 	add_child(bullet)
 
 func _physics_process(delta):
