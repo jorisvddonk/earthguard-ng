@@ -8,6 +8,7 @@ var PIDController = load("res://src/PIDController.gd")
 
 const SHOOT_OFFSET_ALLOWED = 0.00872664626 # 0.5 degrees
 var subsystems: Dictionary
+var _objid = randi()
 
 var velocity = Vector2(0,0)
 @export var acceleration = 230

@@ -1,7 +1,9 @@
 extends Sprite2D
+class_name Bullet
 
 var life = 10
 var velocity = Vector2(0,-300)
+var shooter = null
 
 func _ready():
 	pass # Replace with function body.

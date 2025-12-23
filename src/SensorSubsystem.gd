@@ -2,8 +2,8 @@ extends "res://src/ShipSubsystem.gd"
 
 class_name SensorSubsystem
 
-const MessageType = {
-	"TAKEN_DAMAGE": "TAKEN_DAMAGE"
+enum MessageType {
+	TAKEN_DAMAGE
 }
 
 func _init(ship_node: Node, options: Dictionary = {}):

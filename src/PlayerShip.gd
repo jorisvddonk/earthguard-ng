@@ -1,6 +1,7 @@
 extends Sprite2D
 signal shoot
 
+var _objid = randi()
 var velocity = Vector2(0,0)
 @export var acceleration = 230
 @export var rotationSpeed = 3

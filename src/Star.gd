@@ -78,7 +78,6 @@ func _gen_planets():
 	for i in range(n_planets):
 		var planet = Planet.new()
 		ret.append(planet)
-		add_child(planet)
 	return ret
 
 func _gen_jumpgates(otherstars):
@@ -92,7 +91,6 @@ func _gen_jumpgates(otherstars):
 			"linkedstar": ostar
 		})
 		jumpgates.append(jg)
-		add_child(jg)
 
 func _to_string():
 	return star_name
