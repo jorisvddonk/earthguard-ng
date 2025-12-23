@@ -16,26 +16,25 @@ var player_ship
 var jump_cooldown = 0.0
 var starmap_display
 var radar_display
-var nebula
 
 func _ready():
 	# Create starmap
 	starmap = Starmap.new()
 	current_star = starmap.stars[0]
-
+	
 	# Get starmap display from scene
 	starmap_display = $CanvasLayer/StarmapDisplay
 	starmap_display.starmap = starmap
 	starmap_display.current_star = current_star
 	connect("star_changed", Callable(starmap_display, "set_current_star"))
+	
+	# Update nebula color
+	update_nebula_color()
 
 	# Get radar display from scene
 	radar_display = $CanvasLayer/RadarDisplay
 	radar_display.position = Vector2(get_viewport().size.x - 210, 210)
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
-
-	# Get nebula for dynamic coloring
-	nebula = %Nebula
 
 	# Add planets and jumpgates
 	add_planets_and_jumpgates()
@@ -229,8 +228,7 @@ func jump_to_star(new_star):
 		player_ship.velocity = Vector2(0, 0)
 	# Emit signal to update starmap display
 	emit_signal("star_changed", current_star)
-	# Update nebula color to match star class
-	nebula.modulate = starmap_display.get_star_color(current_star.starclass)
+	update_nebula_color()
 	# Update radar with new entities
 	var all_ships = []
 	for child in get_children():
@@ -241,3 +239,7 @@ func jump_to_star(new_star):
 	jump_cooldown = 2.0
 	# Respawn AI ships
 	spawn_ai_ships()
+
+func update_nebula_color():
+	# Update nebula color to match star class
+	%Nebula.modulate = starmap_display.get_star_color(current_star.starclass)
