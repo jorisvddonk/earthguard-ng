@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cka6ktdvikxhf" path="res://src/main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bd7frs73fri3b" path="res://src/PlayerShip.tscn" id="2"]
-[ext_resource type="Texture2D" uid="uid://inpjgl66ouuu" path="res://content/parallax_1_0.png" id="4_3cfgd"]
+[ext_resource type="Texture2D" uid="uid://dskk3xu4m3yxc" path="res://content/parallax_1_2.png" id="3_5mrjc"]
 [ext_resource type="Texture2D" uid="uid://df317e3wcy3w7" path="res://content/parallax_2.png" id="5_rlaii"]
 [ext_resource type="Texture2D" uid="uid://cetf7pwu78qso" path="res://content/parallax_3.png" id="6_5mrjc"]
 [ext_resource type="Texture2D" uid="uid://1g6exyxktcwu" path="res://content/parallax_4.png" id="7_kf8lf"]
@@ -17,12 +17,12 @@ script = ExtResource("1")
 [node name="Parallax2D" type="Parallax2D" parent="."]
 z_index = -2
 scroll_scale = Vector2(0.1, 0.1)
-repeat_size = Vector2(1600, 1600)
+repeat_size = Vector2(4096, 4096)
 repeat_times = 5
 
 [node name="Nebula" type="Sprite2D" parent="Parallax2D"]
 unique_name_in_owner = true
-texture = ExtResource("4_3cfgd")
+texture = ExtResource("3_5mrjc")
 centered = false
 
 [node name="Parallax2D2" type="Parallax2D" parent="."]

@@ -57,6 +57,24 @@
       }
     },
     {
+      "id": "parallax1_1",
+      "src": "parallax_1_1.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd",
+        "filedetails": "Based off of NASA public domain images; combined together and tiled."
+      }
+    },
+    {
+      "id": "parallax1_2",
+      "src": "parallax_1_2.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd",
+        "filedetails": "Made using SpaceScape"
+      }
+    },
+    {
       "id": "parallax1_0",
       "src": "parallax_1_0.png",
       "contentType": ["image", "png"],
