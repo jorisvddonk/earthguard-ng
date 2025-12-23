@@ -12,6 +12,7 @@ var DirectionalIndicator = load("res://src/DirectionalIndicator.gd")
 var starmap
 var current_star
 var player_ship
+var jump_cooldown = 0.0
 
 func _ready():
 	# Create starmap
@@ -145,6 +146,10 @@ func _on_Ship_shoot(targetpos, ship):
 	add_child(bullet)
 
 func _physics_process(delta):
+	# Update jump cooldown
+	if jump_cooldown > 0:
+		jump_cooldown -= delta
+
 	# Handle collisions
 	for child in get_children():
 		if child.has_method("set_velocity"):  # It's a bullet
@@ -155,3 +160,44 @@ func _physics_process(delta):
 						ship.emit_signal("hit", {"damage": 1, "perpetrator": child.shooter})
 						child.queue_free()
 						break
+
+	# Handle jump gate interactions
+	if jump_cooldown <= 0:
+		for jumpgate in current_star.jumpgates:
+			if player_ship.position.distance_to(jumpgate.position) < 50:
+				if jumpgate.linkedstar:
+					jump_to_star(jumpgate.linkedstar)
+				break
+
+func jump_to_star(new_star):
+	var old_star = current_star
+	current_star = new_star
+	# Clear old planets, jumpgates, and AI ships
+	for child in get_children():
+		if child is Planet or child is Jumpgate:
+			remove_child(child)
+		elif child != player_ship and child.has_method("get_subsystems"):  # AI ships
+			child.queue_free()
+	# Add new planets and jumpgates
+	add_planets_and_jumpgates()
+	# Find the incoming jumpgate (the one linking back to old_star)
+	var incoming_jumpgate = null
+	for jumpgate in current_star.jumpgates:
+		if jumpgate.linkedstar == old_star:
+			incoming_jumpgate = jumpgate
+			break
+	# Position player at the incoming jumpgate and set velocity
+	if incoming_jumpgate:
+		player_ship.position = incoming_jumpgate.position
+		var speed = player_ship.velocity.length()
+		if speed == 0:
+			speed = 100  # default speed if stationary
+		player_ship.velocity = -incoming_jumpgate.position.normalized() * speed
+	else:
+		# Fallback if no incoming jumpgate found
+		player_ship.position = Vector2(200, 300)
+		player_ship.velocity = Vector2(0, 0)
+	# Set jump cooldown to prevent immediate re-jump
+	jump_cooldown = 2.0
+	# Respawn AI ships
+	spawn_ai_ships()
