@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://dd6rbi7bgqm7f"]
 
-[ext_resource path="res://content/bullet.png" type="Texture2D" id=1]
-[ext_resource path="res://Bullet.gd" type="Script" id=2]
+[ext_resource type="Texture2D" uid="uid://gkrt210mshn2" path="res://content/bullet.png" id="1"]
+[ext_resource type="Script" uid="uid://codbw24a7imq6" path="res://Bullet.gd" id="2"]
 
 [node name="Bullet" type="Sprite2D"]
-texture = ExtResource( 1 )
-script = ExtResource( 2 )
+texture = ExtResource("1")
+script = ExtResource("2")

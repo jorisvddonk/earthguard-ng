@@ -66,8 +66,9 @@ func _process(delta):
 	position += velocity * delta
 	
 	emit_signal("shoot", target) # TODO: figure out _when_ to shoot
+	
+	queue_redraw()
 
-	update() # redraw
 
 func thrust(vel, delta):
 	#pass # temporarily disabled
@@ -92,10 +93,10 @@ func intercept(shooter: Vector2, bullet_speed: float, target: Vector2, target_ve
 	var c = -displacement.dot(displacement)
 	var lrg = largest_root_of_quadratic_equation(a, b, c)
 	if lrg == NAN or lrg == null:
-	  return null
+		return null
 	else:
-	  var interception_world = target + (target_velocity * lrg)
-	  return interception_world
+		var interception_world = target + (target_velocity * lrg)
+		return interception_world
 
 func largest_root_of_quadratic_equation(a, b, c):
 	return (b + sqrt(b * b - 4 * a * c)) / (2 * a)
