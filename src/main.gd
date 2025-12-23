@@ -15,6 +15,7 @@ var current_star
 var player_ship
 var jump_cooldown = 0.0
 var starmap_display
+var radar_display
 var nebula
 
 func _ready():
@@ -27,6 +28,11 @@ func _ready():
 	starmap_display.starmap = starmap
 	starmap_display.current_star = current_star
 	connect("star_changed", Callable(starmap_display, "set_current_star"))
+
+	# Get radar display from scene
+	radar_display = $CanvasLayer/RadarDisplay
+	radar_display.position = Vector2(get_viewport().size.x - 210, 210)
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
 
 	# Get nebula for dynamic coloring
 	nebula = %Nebula
@@ -57,6 +63,8 @@ func _ready():
 	player_ship.add_child(indicator)
 
 func add_planets_and_jumpgates():
+	add_child(current_star)
+	current_star.z_index = 0  # same as planets
 	for planet in current_star.planets:
 		add_child(planet)
 		planet.z_index = 0
@@ -181,12 +189,22 @@ func _physics_process(delta):
 					jump_to_star(jumpgate.linkedstar)
 				break
 
+	# Update radar
+	var all_ships = []
+	for child in get_children():
+		if child is Node2D and child.has_method("get_subsystems"):
+			all_ships.append(child)
+	radar_display.update_entities(player_ship, all_ships, current_star.planets, current_star.jumpgates, current_star)
+
+func _on_viewport_size_changed():
+	radar_display.position = Vector2(get_viewport().size.x - 210, 210)
+
 func jump_to_star(new_star):
 	var old_star = current_star
 	current_star = new_star
-	# Clear old planets, jumpgates, and AI ships
+	# Clear old planets, jumpgates, star, and AI ships
 	for child in get_children():
-		if child is Planet or child is Jumpgate:
+		if child is Planet or child is Jumpgate or child is Star:
 			remove_child(child)
 		elif child != player_ship and child.has_method("get_subsystems"):  # AI ships
 			child.queue_free()
@@ -213,6 +231,12 @@ func jump_to_star(new_star):
 	emit_signal("star_changed", current_star)
 	# Update nebula color to match star class
 	nebula.modulate = starmap_display.get_star_color(current_star.starclass)
+	# Update radar with new entities
+	var all_ships = []
+	for child in get_children():
+		if child is Node2D and child.has_method("get_subsystems"):
+			all_ships.append(child)
+	radar_display.update_entities(player_ship, all_ships, current_star.planets, current_star.jumpgates, current_star)
 	# Set jump cooldown to prevent immediate re-jump
 	jump_cooldown = 2.0
 	# Respawn AI ships
