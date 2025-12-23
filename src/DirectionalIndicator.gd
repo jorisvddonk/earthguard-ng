@@ -30,13 +30,21 @@ func _draw():
 	
 	for planet in planets:
 		var direction = (planet.position - player_ship.position).normalized()
+		var distance = (planet.position - player_ship.position).length()
+		var alpha = clamp(1.0 - distance / 3000.0, 0.5, 1.0)
 		var arrow_pos = direction * radius
-		draw_arrow(arrow_pos, direction.angle(), Color.BLUE)
+		var color = Color.BLUE
+		color.a = alpha
+		draw_arrow(arrow_pos, direction.angle(), color)
 	
 	for jumpgate in jumpgates:
 		var direction = (jumpgate.position - player_ship.position).normalized()
+		var distance = (jumpgate.position - player_ship.position).length()
+		var alpha = clamp(1.0 - distance / 3000.0, 0.5, 1.0)
 		var arrow_pos = direction * radius
-		draw_arrow(arrow_pos, direction.angle(), Color.GREEN)
+		var color = Color.GREEN
+		color.a = alpha
+		draw_arrow(arrow_pos, direction.angle(), color)
 
 func draw_arrow(pos: Vector2, angle: float, color: Color):
 	angle += PI / 2  # Tangential counterclockwise
