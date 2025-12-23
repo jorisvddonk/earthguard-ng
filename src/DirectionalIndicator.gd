@@ -35,7 +35,7 @@ func _draw():
 		var arrow_pos = direction * radius
 		var color = Color.BLUE
 		color.a = alpha
-		draw_arrow(arrow_pos, direction.angle(), color)
+		draw_arrow(arrow_pos, direction.angle(), color, distance)
 	
 	for jumpgate in jumpgates:
 		var direction = (jumpgate.position - player_ship.position).normalized()
@@ -44,11 +44,13 @@ func _draw():
 		var arrow_pos = direction * radius
 		var color = Color.GREEN
 		color.a = alpha
-		draw_arrow(arrow_pos, direction.angle(), color)
+		draw_arrow(arrow_pos, direction.angle(), color, distance)
 
-func draw_arrow(pos: Vector2, angle: float, color: Color):
+func draw_arrow(pos: Vector2, angle: float, color: Color, distance: float):
 	angle += PI / 2  # Tangential counterclockwise
-	var arrow_length = 20
+	var base_length = 10
+	var max_extra = 20
+	var arrow_length = base_length + clamp(3000 - distance, 0, 3000) / 3000 * max_extra
 	var arrow_width = 10
 	var arrow_tip_length = 5
 	
