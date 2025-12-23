@@ -36,6 +36,10 @@ func _ready():
 	radar_display.position = Vector2(get_viewport().size.x - 210, 210)
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 
+	# Initialize notification system
+	var notification_system = $CanvasLayer/NotificationSystem
+	notification_system.init($CanvasLayer/NotificationSystem/NotificationBar, $CanvasLayer/NotificationSystem/BubbleLabel)
+
 	# Add planets and jumpgates
 	add_planets_and_jumpgates()
 
@@ -178,7 +182,6 @@ func _physics_process(delta):
 					if dist < 30:  # collision radius
 						ship.emit_signal("hit", {"damage": 1, "perpetrator": child.shooter})
 						child.queue_free()
-						break
 
 	# Handle jump gate interactions
 	if jump_cooldown <= 0:

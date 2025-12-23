@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bw4xw53uc2q4j"]
+[gd_scene load_steps=10 format=3 uid="uid://bw4xw53uc2q4j"]
 
 [ext_resource type="Script" uid="uid://cka6ktdvikxhf" path="res://src/main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bd7frs73fri3b" path="res://src/PlayerShip.tscn" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://1g6exyxktcwu" path="res://content/parallax_4.png" id="7_kf8lf"]
 [ext_resource type="Script" uid="uid://cbd3kbx0rcq7t" path="res://src/StarmapDisplay.gd" id="8"]
 [ext_resource type="Script" uid="uid://c107ymevqqe2g" path="res://src/RadarDisplay.gd" id="9"]
+[ext_resource type="Script" uid="uid://klfmi2qvgnj1" path="res://src/NotificationSystem.gd" id="10"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1")
@@ -63,3 +64,30 @@ script = ExtResource("8")
 [node name="RadarDisplay" type="Node2D" parent="CanvasLayer"]
 position = Vector2(500, 10)
 script = ExtResource("9")
+
+[node name="NotificationSystem" type="Node" parent="CanvasLayer"]
+script = ExtResource("10")
+
+[node name="NotificationBar" type="HBoxContainer" parent="CanvasLayer/NotificationSystem"]
+layout_direction = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BubbleLabel" type="Label" parent="CanvasLayer/NotificationSystem"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -80.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+horizontal_alignment = 2
+vertical_alignment = 2
