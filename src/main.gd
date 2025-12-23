@@ -15,6 +15,7 @@ var current_star
 var player_ship
 var jump_cooldown = 0.0
 var starmap_display
+var nebula
 
 func _ready():
 	# Create starmap
@@ -26,6 +27,9 @@ func _ready():
 	starmap_display.starmap = starmap
 	starmap_display.current_star = current_star
 	connect("star_changed", Callable(starmap_display, "set_current_star"))
+
+	# Get nebula for dynamic coloring
+	nebula = %Nebula
 
 	# Add planets and jumpgates
 	add_planets_and_jumpgates()
@@ -207,6 +211,8 @@ func jump_to_star(new_star):
 		player_ship.velocity = Vector2(0, 0)
 	# Emit signal to update starmap display
 	emit_signal("star_changed", current_star)
+	# Update nebula color to match star class
+	nebula.modulate = starmap_display.get_star_color(current_star.starclass)
 	# Set jump cooldown to prevent immediate re-jump
 	jump_cooldown = 2.0
 	# Respawn AI ships

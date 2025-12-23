@@ -18,7 +18,8 @@ scroll_scale = Vector2(0.1, 0.1)
 repeat_size = Vector2(1600, 1600)
 repeat_times = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+[node name="Nebula" type="Sprite2D" parent="Parallax2D"]
+unique_name_in_owner = true
 texture = ExtResource("4_3cfgd")
 centered = false
 
@@ -27,7 +28,7 @@ scroll_scale = Vector2(0.3, 0.3)
 repeat_size = Vector2(1349, 943)
 repeat_times = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D2"]
+[node name="FarStars" type="Sprite2D" parent="Parallax2D2"]
 texture = ExtResource("5_rlaii")
 centered = false
 
@@ -36,7 +37,7 @@ scroll_scale = Vector2(0.6, 0.6)
 repeat_size = Vector2(1389, 941)
 repeat_times = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D3"]
+[node name="CloserStars" type="Sprite2D" parent="Parallax2D3"]
 texture = ExtResource("6_5mrjc")
 centered = false
 
@@ -44,7 +45,7 @@ centered = false
 repeat_size = Vector2(1391, 953)
 repeat_times = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D4"]
+[node name="SpaceDebrisClose" type="Sprite2D" parent="Parallax2D4"]
 texture = ExtResource("7_kf8lf")
 centered = false
 
