@@ -2,8 +2,8 @@ extends Node2D
 
 signal shoot
 
-var Bullet = load("res://Bullet.tscn")
-var PIDController = load("res://PIDController.gd")
+var Bullet = load("res://src/Bullet.tscn")
+var PIDController = load("res://src/PIDController.gd")
 
 var xpid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
 var ypid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)

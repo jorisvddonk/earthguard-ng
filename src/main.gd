@@ -1,6 +1,6 @@
 extends Node2D
 
-var Bullet = load("res://Bullet.tscn")
+var Bullet = load("res://src/Bullet.tscn")
 
 func _ready():
 	$PlayerShip.connect("shoot", Callable(self, "_on_Ship_shoot").bind(null, $PlayerShip))

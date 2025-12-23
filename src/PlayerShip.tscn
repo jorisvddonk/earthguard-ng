@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cetf7pwu78qso" path="res://content/parallax_3.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://i0ypuu4w7q5g" path="res://content/ship.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://df317e3wcy3w7" path="res://content/parallax_2.png" id="5"]
-[ext_resource type="Script" uid="uid://vaqgg03scjwx" path="res://PlayerShip.gd" id="6"]
+[ext_resource type="Script" uid="uid://vaqgg03scjwx" path="res://src/PlayerShip.gd" id="6"]
 
 [node name="PlayerShip" type="Sprite2D"]
 position = Vector2(117, 104)
