@@ -31,3 +31,6 @@ func consume_fuel(amount: float) -> bool:
 			tank.content -= amount
 			return true
 	return false
+
+func tick(delta):
+	pass

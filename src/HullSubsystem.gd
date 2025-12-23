@@ -23,3 +23,6 @@ func _on_hit(damage: float):
 
 func take_damage(amount: float):
 	self.integrity -= amount
+
+func tick(delta):
+	pass

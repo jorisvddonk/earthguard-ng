@@ -5,6 +5,8 @@ var Starmap = load("res://src/Starmap.gd")
 var Planet = load("res://src/Planet.gd")
 var Jumpgate = load("res://src/Jumpgate.gd")
 var Ship = load("res://src/Ship.tscn")
+var Task = load("res://src/Task.gd")
+var Target = load("res://src/Target.gd")
 
 var starmap
 var current_star
@@ -21,6 +23,7 @@ func _ready():
 	# Set up player ship
 	player_ship = $PlayerShip
 	player_ship.position = Vector2(200, 300)
+	player_ship.texture = load("res://content/ship.png")
 	
 	# Connect shooting
 	player_ship.connect("shoot", Callable(self, "_on_Ship_shoot").bind(null, player_ship))
@@ -47,19 +50,77 @@ func spawn_random_ship():
 	var factions = ["Civilians", "Civilians", "Civilians", "Pirates", "Police", "Police", "AnnoyingFan"]
 	var faction = factions[randi() % factions.size()]
 	
+	var gfxID = {
+		"Civilians": "ship2",
+		"Pirates": "ship5",
+		"Police": "ship6",
+		"AnnoyingFan": "ship7"
+	}[faction]
+	
 	var ship_scene = Ship.instantiate()
+	ship_scene.faction = faction
 	ship_scene.position = Vector2(randf_range(-750, 750), randf_range(-750, 750))
 	ship_scene.velocity = Vector2(randf_range(-1.5, 3.5), randf_range(-1.5, 3.5))
 	
+	# Set graphics
+	if ship_scene.has_node("Sprite2D"):
+		ship_scene.get_node("Sprite2D").texture = load("res://content/" + gfxID + ".png")
+	
 	add_child(ship_scene)
 	
-	# Set faction and AI task
-	# For simplicity, set a basic task
-	var ai = ship_scene.get_subsystems().ai
-	var task = Task.new(Task.TaskType.IDLE)
-	ai.set_task(task)
+	# Connect signals
+	ship_scene.get_subsystems().autopilot.connect("complete", Callable(self, "_on_autopilot_complete").bind(ship_scene))
+	ship_scene.get_subsystems().ai.connect("target_lost", Callable(self, "_on_ai_target_lost").bind(ship_scene))
+	
+	# Set initial task
+	set_next_task_for_ship(ship_scene)
 	
 	ship_scene.connect("shoot", Callable(self, "_on_Ship_shoot").bind(ship_scene))
+
+func set_next_task_for_ship(ship):
+	var faction = ship.faction
+	var ai = ship.get_subsystems().ai
+	var task
+	if faction == "Civilians":
+		if current_star.planets.size() > 0:
+			var planet = current_star.planets[randi() % current_star.planets.size()]
+			var target = Target.new(Target.TargetType.GAMEOBJECT, planet)
+			task = Task.new(Task.TaskType.MOVE, target)
+		else:
+			task = Task.new(Task.TaskType.IDLE)
+	elif faction == "Pirates":
+		var target_ship = find_ship_of_faction("Civilians")
+		if target_ship:
+			var target = Target.new(Target.TargetType.SHIP, target_ship)
+			task = Task.new(Task.TaskType.ATTACK, target)
+		else:
+			task = Task.new(Task.TaskType.IDLE)
+	elif faction == "Police":
+		var target_ship = find_ship_of_faction("Pirates")
+		if target_ship:
+			var target = Target.new(Target.TargetType.SHIP, target_ship)
+			task = Task.new(Task.TaskType.ATTACK, target)
+		else:
+			task = Task.new(Task.TaskType.IDLE)
+	elif faction == "AnnoyingFan":
+		var target = Target.new(Target.TargetType.SHIP, player_ship)
+		task = Task.new(Task.TaskType.FOLLOW, target)
+	else:
+		task = Task.new(Task.TaskType.IDLE)
+	ai.set_task(task)
+
+func find_ship_of_faction(target_faction: String):
+	for child in get_children():
+		if child is Node2D and child.has_method("get_subsystems") and child != player_ship:
+			if child.faction == target_faction:
+				return child
+	return null
+
+func _on_autopilot_complete(ship):
+	set_next_task_for_ship(ship)
+
+func _on_ai_target_lost(ship):
+	set_next_task_for_ship(ship)
 
 func _on_Ship_shoot(targetpos, ship):
 	var bullet = Bullet.instantiate()

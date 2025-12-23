@@ -17,3 +17,6 @@ func _init(ship_node: Node, options: Dictionary = {}):
 	self.power = options.power
 	self.can_reverse = options.can_reverse
 	self.thrust_vector = Vector2(self.power, 0)
+
+func tick(delta):
+	pass

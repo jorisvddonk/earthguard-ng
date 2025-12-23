@@ -30,10 +30,10 @@ func get_target_position():
 		if obj != null:
 			return obj.position
 		else:
-			return TargetType.LOST
+			return null
 	elif self.tgt is Vector2:
 		return self.tgt
 	elif self.type == TargetType.LOST:
-		return self.type
+		return null
 	else:
 		return null

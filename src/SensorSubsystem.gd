@@ -21,3 +21,6 @@ func _on_hit(data: Dictionary):
 			"damage": data.damage,
 			"perpetrator_objid": data.perpetrator._objid
 		})
+
+func tick(delta):
+	pass

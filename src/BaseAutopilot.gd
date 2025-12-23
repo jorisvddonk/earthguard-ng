@@ -2,6 +2,8 @@ extends "res://src/ShipSubsystem.gd"
 
 class_name BaseAutopilot
 
+signal complete
+
 var Task = load("res://src/Task.gd")
 var Target = load("res://src/Target.gd")
 
@@ -14,6 +16,9 @@ func _init(ship_node: Node, options: Dictionary = {}):
 	self.controllers = {}
 	self.state = {}
 	# Connect to ai_target_changed if exists
+
+func tick(delta):
+	pass
 
 func get_target():
 	if ship.has_method("get_subsystems") and ship.get_subsystems().has("ai"):

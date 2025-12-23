@@ -2,6 +2,8 @@ extends "res://src/ShipSubsystem.gd"
 
 class_name AISubsystem
 
+signal target_lost
+
 var Task = load("res://src/Task.gd")
 var Target = load("res://src/Target.gd")
 var MemoryReader = load("res://src/MemoryReader.gd")
@@ -22,14 +24,14 @@ func _init(ship_node: Node, options: Dictionary = {}):
 	}
 	self.memory_reader = MemoryReader.new(ship_node, callbacks)
 
-func tick():
-	super.tick()
+func tick(delta):
+	super.tick(delta)
 	
 	if self.task and self.task.target:
 		if (self.task.target.type == Target.TargetType.LOST or 
 			(self.task.target.type == Target.TargetType.GAMEOBJECT and not self.task.target.get_game_object())):
 			# Target lost
-			pass  # Emit signal or something
+			emit_signal("target_lost")  # Emit signal or something
 	
 	# Other logic
 
