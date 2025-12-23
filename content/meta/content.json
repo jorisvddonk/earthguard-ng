@@ -1,0 +1,239 @@
+{
+  "files": [
+    {
+      "id": "ship",
+      "src": "ship.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "tyrian_dcook"
+      }
+    },
+    {
+      "id": "ship2",
+      "src": "ship2.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "tyrian_dcook"
+      }
+    },
+    {
+      "id": "ship5",
+      "src": "ship5.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "tyrian_dcook"
+      }
+    },
+    {
+      "id": "ship6",
+      "src": "ship6.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "tyrian_dcook"
+      }
+    },
+    {
+      "id": "ship7",
+      "src": "ship7.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "tyrian_dcook"
+      }
+    },
+    {
+      "id": "jumppoint",
+      "src": "jumppoint.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd"
+      }
+    },
+    {
+      "id": "parallax0",
+      "src": "parallax_0.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd"
+      }
+    },
+    {
+      "id": "parallax1_0",
+      "src": "parallax_1_0.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd",
+        "filedetails": "Modified so it tiles properly. Original filename: nebula34.png"
+      }
+    },
+    {
+      "id": "parallax2",
+      "src": "parallax_2.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd",
+        "filedetails": "Made using SpaceScape"
+      }
+    },
+    {
+      "id": "parallax3",
+      "src": "parallax_3.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd",
+        "filedetails": "Made using SpaceScape"
+      }
+    },
+    {
+      "id": "parallax4",
+      "src": "parallax_4.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd",
+        "filedetails": "Made using SpaceScape"
+      }
+    },
+    {
+      "id": "bullet",
+      "src": "bullet.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "jorisvddonk_pd"
+      }
+    },
+    {
+      "id": "star_blue_1",
+      "src": "stars/blue01.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_blue_2",
+      "src": "stars/blue02.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_blue_3",
+      "src": "stars/blue04.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_green_1",
+      "src": "stars/green01.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_green_2",
+      "src": "stars/green02.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_orange_1",
+      "src": "stars/orange01.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_orange_2",
+      "src": "stars/orange02.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_orange_3",
+      "src": "stars/orange05.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_white_1",
+      "src": "stars/white01.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_white_2",
+      "src": "stars/white02.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_yellow_1",
+      "src": "stars/yellow01.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_yellow_2",
+      "src": "stars/yellow02.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "star_red_1",
+      "src": "stars/redgiant01.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    },
+    {
+      "id": "planet_test",
+      "src": "planets/P02.png",
+      "contentType": ["image", "png"],
+      "attribution": {
+        "_id": "naev_btaxis_pd"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "tyrian_dcook",
+      "author": "Daniel Cook",
+      "details": "Tyrian ships and tiles",
+      "license": "Permissive",
+      "href": "http://www.lostgarden.com/2007/04/free-game-graphics-tyrian-ships-and.html"
+    },
+    {
+      "id": "jorisvddonk_pd",
+      "author": "Joris van de Donk",
+      "details": "Stuff made by myself",
+      "license": "Public Domain",
+      "href": "http://mooses.nl"
+    },
+    {
+      "id": "naev_btaxis_pd",
+      "author": "naev//BTAxis",
+      "details": "Stuff made by BTAxis, for naev",
+      "license": "Public Domain",
+      "href": "https://github.com/bobbens/naev/blob/master/dat/gfx/ARTWORK_LICENSE"
+    }
+  ]
+}
