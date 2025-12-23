@@ -6,23 +6,8 @@ signal hit
 var Bullet = load("res://src/Bullet.tscn")
 var PIDController = load("res://src/PIDController.gd")
 
-var MemorySubsystem = load("res://src/MemorySubsystem.gd")
-var AISubsystem = load("res://src/AISubsystem.gd")
-var AutopilotV2 = load("res://src/AutopilotV2.gd")
-var HullSubsystem = load("res://src/HullSubsystem.gd")
-var EngineSubsystem = load("res://src/EngineSubsystem.gd")
-var FueltanksSubsystem = load("res://src/FueltanksSubsystem.gd")
-var SensorSubsystem = load("res://src/SensorSubsystem.gd")
-
+const SHOOT_OFFSET_ALLOWED = 0.00872664626 # 0.5 degrees
 var subsystems: Dictionary
-
-var xpid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
-var ypid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
-const OFFSET_ALLOWED = 0.0872664626 # 5 degrees
-const OFFSET_ALLOWED_BACKWARDS = 0.436332313 # 25 degrees
-const SHOOT_OFFSET_ALLOWED = OFFSET_ALLOWED * 0.1
-var thrust_vec = null
-var target = null
 
 var velocity = Vector2(0,0)
 @export var acceleration = 230
@@ -56,56 +41,28 @@ func maybe_fire():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var player : Node2D = self.owner.get_node("PlayerShip")
-	var possible_bullet_velocity = velocity.length() + 300
+	# Tick subsystems first
+	for subsystem in subsystems.values():
+		if subsystem.has_method("tick"):
+			subsystem.tick()
 	
-	target = player.position
-	var tgtError = target - position
-	
-	target = self.intercept(position, possible_bullet_velocity, player.position, player.velocity)
-	
-	tgtError = target - position	
-	xpid.setError(tgtError.x)
-	ypid.setError(tgtError.y)
-	xpid.step()
-	ypid.step()
-	
-	thrust_vec = Vector2(-xpid.getError(), -ypid.getError())
-	var sign_ = 1
-	var thrust_angle = Vector2.UP.rotated(rotation).angle_to(thrust_vec)
-	
-	# If we have a large thrust vector (large error):
-	if thrust_vec.length() > 0:
-		# Turn towards x_thrust/y_thrust
-		if thrust_angle != NAN:
-			if thrust_angle < PI - OFFSET_ALLOWED_BACKWARDS && thrust_angle > -PI + OFFSET_ALLOWED_BACKWARDS:
-				self.rotate_(thrust_angle)
-			else:
-				sign_ = -1
-				if thrust_angle > 0:
-					thrust_angle = -(PI - thrust_angle)
-				elif thrust_angle < 0:
-					thrust_angle = -(-PI + thrust_angle)
-				self.rotate_(thrust_angle)
-	
-		# Thrust if we're aligned correctly;
-		if thrust_angle < OFFSET_ALLOWED && thrust_angle > -OFFSET_ALLOWED:
-			var actual_thrust = clamp(thrust_vec.length() * sign_ * 500, -1, 1)
-			self.thrust(actual_thrust, delta) # todo lower/max thrust?
-
+	# Apply velocity
 	if velocity.length() > maxSpeed:
 		velocity = velocity.normalized() * maxSpeed
 		
 	position += velocity * delta
 	
-	emit_signal("shoot", target) # TODO: figure out _when_ to shoot
+	# Handle shooting
+	var target = subsystems.ai.get_target()
+	if target:
+		var target_pos = target.get_target_position()
+		if target_pos is Vector2:
+			var angle_to_target = position.angle_to_point(target_pos)
+			var angle_diff = abs(angle_to_target - rotation)
+			if angle_diff < SHOOT_OFFSET_ALLOWED:
+				emit_signal("shoot", target_pos)
 	
 	queue_redraw()
-	
-	# Tick subsystems
-	for subsystem in subsystems.values():
-		if subsystem.has_method("tick"):
-			subsystem.tick()
 
 
 func thrust(vel, delta):
@@ -116,13 +73,8 @@ func rotate_(angle):
 	rotation += clamp(angle, -PI * 0.01, PI * 0.01)
 
 func _draw():
-	var inv = get_global_transform().inverse()
-	if thrust_vec != null:
-		draw_set_transform(Vector2.ZERO, inv.get_rotation(), Vector2.ONE) # undo global rotation
-		draw_line(Vector2.ZERO, thrust_vec, Color.RED, 2.0)
-	if target != null:
-		draw_set_transform(inv.origin, inv.get_rotation(), Vector2.ONE) # undo global rotation and position
-		draw_circle(target, 10, Color.RED)
+	# Drawing handled by subsystems if needed
+	pass
 
 func intercept(shooter: Vector2, bullet_speed: float, target: Vector2, target_velocity: Vector2):
 	var displacement = shooter - target
