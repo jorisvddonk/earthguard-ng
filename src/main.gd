@@ -242,4 +242,6 @@ func jump_to_star(new_star):
 
 func update_nebula_color():
 	# Update nebula color to match star class
-	%Nebula.modulate = starmap_display.get_star_color(current_star.starclass)
+	var c = starmap_display.get_star_color(current_star.starclass)
+	%Nebula.modulate = c
+	%FarStars.modulate = Color(c.r, c.g, c.b, 0.2)
