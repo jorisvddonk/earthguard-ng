@@ -3,6 +3,7 @@ extends Node2D
 class_name StarmapDisplay
 
 var starmap
+var current_star
 @export var scale_factor: float = 5.0
 
 func _ready():
@@ -27,6 +28,9 @@ func _draw():
 		var radius = star.radius * 2.0
 		var color = get_star_color(star.starclass)
 		draw_circle(pos, radius, color)
+		# Highlight current star
+		if star == current_star:
+			draw_circle(pos, radius + 3.0, Color.WHITE, false, 2.0)
 
 func get_star_color(starclass: String) -> Color:
 	match starclass:
@@ -41,4 +45,8 @@ func get_star_color(starclass: String) -> Color:
 
 func set_starmap(new_starmap: Starmap):
 	starmap = new_starmap
+	queue_redraw()
+
+func set_current_star(star):
+	current_star = star
 	queue_redraw()

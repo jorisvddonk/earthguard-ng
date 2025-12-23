@@ -1,5 +1,7 @@
 extends Node2D
 
+signal star_changed(star)
+
 var Bullet = load("res://src/Bullet.tscn")
 var Starmap = load("res://src/Starmap.gd")
 var Planet = load("res://src/Planet.gd")
@@ -8,37 +10,43 @@ var Ship = load("res://src/Ship.tscn")
 var Task = load("res://src/Task.gd")
 var Target = load("res://src/Target.gd")
 var DirectionalIndicator = load("res://src/DirectionalIndicator.gd")
-
 var starmap
 var current_star
 var player_ship
 var jump_cooldown = 0.0
+var starmap_display
 
 func _ready():
 	# Create starmap
 	starmap = Starmap.new()
 	current_star = starmap.stars[0]
-	
+
+	# Get starmap display from scene
+	starmap_display = $CanvasLayer/StarmapDisplay
+	starmap_display.starmap = starmap
+	starmap_display.current_star = current_star
+	connect("star_changed", Callable(starmap_display, "set_current_star"))
+
 	# Add planets and jumpgates
 	add_planets_and_jumpgates()
-	
+
 	# Set up player ship
 	player_ship = $PlayerShip
 	player_ship.position = Vector2(200, 300)
 	player_ship.texture = load("res://content/ship.png")
 	player_ship.z_index = 1
-	
+
 	# Connect shooting
 	player_ship.connect("shoot", Callable(self, "_on_Ship_shoot").bind(null, player_ship))
-	
+
 	# Spawn AI ships
 	spawn_ai_ships()
-	
+
 	# Set up camera
 	var camera = Camera2D.new()
 	player_ship.add_child(camera)
 	camera.make_current()
-	
+
 	# Add directional indicator
 	var indicator = Node2D.new()
 	indicator.script = DirectionalIndicator
@@ -197,6 +205,8 @@ func jump_to_star(new_star):
 		# Fallback if no incoming jumpgate found
 		player_ship.position = Vector2(200, 300)
 		player_ship.velocity = Vector2(0, 0)
+	# Emit signal to update starmap display
+	emit_signal("star_changed", current_star)
 	# Set jump cooldown to prevent immediate re-jump
 	jump_cooldown = 2.0
 	# Respawn AI ships

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bw4xw53uc2q4j"]
+[gd_scene load_steps=8 format=3 uid="uid://bw4xw53uc2q4j"]
 
 [ext_resource type="Script" uid="uid://cka6ktdvikxhf" path="res://src/main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bd7frs73fri3b" path="res://src/PlayerShip.tscn" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://df317e3wcy3w7" path="res://content/parallax_2.png" id="5_rlaii"]
 [ext_resource type="Texture2D" uid="uid://cetf7pwu78qso" path="res://content/parallax_3.png" id="6_5mrjc"]
 [ext_resource type="Texture2D" uid="uid://1g6exyxktcwu" path="res://content/parallax_4.png" id="7_kf8lf"]
+[ext_resource type="Script" uid="uid://cbd3kbx0rcq7t" path="res://src/StarmapDisplay.gd" id="8"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1")
@@ -46,3 +47,9 @@ repeat_times = 5
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D4"]
 texture = ExtResource("7_kf8lf")
 centered = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StarmapDisplay" type="Node2D" parent="CanvasLayer"]
+position = Vector2(10, 10)
+script = ExtResource("8")
