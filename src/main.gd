@@ -171,9 +171,9 @@ func _physics_process(delta):
 
 	# Handle collisions
 	for child in get_children():
-		if child.has_method("set_velocity"):  # It's a bullet
+		if child is Bullet:  # It's a bullet
 			for ship in get_children():
-				if ship is Node2D and ship.has_method("get_subsystems") and ship != child.owner:
+				if ship is Ship and ship != child.owner:
 					var dist = child.position.distance_to(ship.position)
 					if dist < 30:  # collision radius
 						ship.emit_signal("hit", {"damage": 1, "perpetrator": child.shooter})
@@ -191,7 +191,7 @@ func _physics_process(delta):
 	# Update radar
 	var all_ships = []
 	for child in get_children():
-		if child is Node2D and child.has_method("get_subsystems"):
+		if child is Ship:
 			all_ships.append(child)
 	radar_display.update_entities(player_ship, all_ships, current_star.planets, current_star.jumpgates, current_star)
 
@@ -205,7 +205,7 @@ func jump_to_star(new_star):
 	for child in get_children():
 		if child is Planet or child is Jumpgate or child is Star:
 			remove_child(child)
-		elif child != player_ship and child.has_method("get_subsystems"):  # AI ships
+		elif child != player_ship and child is Ship:  # AI ships
 			child.queue_free()
 	# Add new planets and jumpgates
 	add_planets_and_jumpgates()
@@ -232,7 +232,7 @@ func jump_to_star(new_star):
 	# Update radar with new entities
 	var all_ships = []
 	for child in get_children():
-		if child is Node2D and child.has_method("get_subsystems"):
+		if child is Node2D and child is Ship:
 			all_ships.append(child)
 	radar_display.update_entities(player_ship, all_ships, current_star.planets, current_star.jumpgates, current_star)
 	# Set jump cooldown to prevent immediate re-jump
