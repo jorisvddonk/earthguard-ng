@@ -1,9 +1,20 @@
 extends Node2D
 
 signal shoot
+signal hit
 
 var Bullet = load("res://src/Bullet.tscn")
 var PIDController = load("res://src/PIDController.gd")
+
+var MemorySubsystem = load("res://src/MemorySubsystem.gd")
+var AISubsystem = load("res://src/AISubsystem.gd")
+var AutopilotV2 = load("res://src/AutopilotV2.gd")
+var HullSubsystem = load("res://src/HullSubsystem.gd")
+var EngineSubsystem = load("res://src/EngineSubsystem.gd")
+var FueltanksSubsystem = load("res://src/FueltanksSubsystem.gd")
+var SensorSubsystem = load("res://src/SensorSubsystem.gd")
+
+var subsystems: Dictionary
 
 var xpid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
 var ypid = PIDController.new(-0.45, -0.2, -80, -10, 10, -10, 10)
@@ -20,6 +31,28 @@ var velocity = Vector2(0,0)
 
 func _ready():
 	self.connect("shoot", Callable(self, "_on_shoot"))
+	
+	# Initialize subsystems
+	subsystems.memory = MemorySubsystem.new(self)
+	subsystems.ai = AISubsystem.new(self)
+	subsystems.autopilot = AutopilotV2.new(self)
+	subsystems.hull = HullSubsystem.new(self)
+	subsystems.engine = EngineSubsystem.new(self)
+	subsystems.fueltanks = FueltanksSubsystem.new(self)
+	subsystems.sensor = SensorSubsystem.new(self)
+
+func get_subsystems() -> Dictionary:
+	return subsystems
+
+func maybe_fire():
+	var target = subsystems.ai.get_target()
+	if target:
+		var target_pos = target.get_target_position()
+		if target_pos is Vector2:
+			var angle_to_target = position.angle_to_point(target_pos)
+			var angle_diff = abs(angle_to_target - rotation)
+			if angle_diff < SHOOT_OFFSET_ALLOWED:
+				emit_signal("shoot", target_pos)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -68,6 +101,11 @@ func _process(delta):
 	emit_signal("shoot", target) # TODO: figure out _when_ to shoot
 	
 	queue_redraw()
+	
+	# Tick subsystems
+	for subsystem in subsystems.values():
+		if subsystem.has_method("tick"):
+			subsystem.tick()
 
 
 func thrust(vel, delta):
