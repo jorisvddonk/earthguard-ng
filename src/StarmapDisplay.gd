@@ -14,22 +14,25 @@ func _draw():
 	if not starmap:
 		return
 	
-	# Draw links first
+	# Draw links first with black outline
 	for link in starmap.links:
 		var star1 = link["star1"]
 		var star2 = link["star2"]
 		var pos1 = Vector2(star1.mapx * scale_factor, star1.mapy * scale_factor)
 		var pos2 = Vector2(star2.mapx * scale_factor, star2.mapy * scale_factor)
+		draw_line(pos1, pos2, Color.BLACK, 3.0)  # Black outline
 		draw_line(pos1, pos2, Color(0.5, 0.5, 0.5, 0.7), 1.0)  # Gray lines for links
-	
-	# Draw stars
+
+	# Draw stars with black outline
 	for star in starmap.stars:
 		var pos = Vector2(star.mapx * scale_factor, star.mapy * scale_factor)
 		var radius = star.radius * 2.0
 		var color = get_star_color(star.starclass)
+		draw_circle(pos, radius + 1.0, Color.BLACK)  # Black outline
 		draw_circle(pos, radius, color)
 		# Highlight current star
 		if star == current_star:
+			draw_circle(pos, radius + 4.0, Color.BLACK, false, 3.0)  # Black outline for highlight
 			draw_circle(pos, radius + 3.0, Color.WHITE, false, 2.0)
 
 func get_star_color(starclass: String) -> Color:
