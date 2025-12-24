@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvkukj73sgu78"]
+
+[ext_resource type="Script" uid="uid://c6qtf3cbme4d6" path="res://src/Ship.gd" id="1_ru2af"]
+[ext_resource type="Texture2D" uid="uid://b6jhsmmnrtxpd" path="res://content/ship6.png" id="2_knha1"]
+[ext_resource type="Texture2D" uid="uid://cuwty6j3ayh3" path="res://content/police_lights.png" id="3_ctncq"]
+[ext_resource type="Script" uid="uid://bcj1o5ss36qlu" path="res://src/police_lights_1.gd" id="4_2h7ou"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7nha6"]
+blend_mode = 1
+
+[node name="PoliceShip" type="Node2D"]
+script = ExtResource("1_ru2af")
+metadata/_custom_type_script = "uid://c6qtf3cbme4d6"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -7)
+texture = ExtResource("2_knha1")
+
+[node name="PoliceLights1" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_7nha6")
+position = Vector2(-9, -7)
+scale = Vector2(0.11, 0.11)
+texture = ExtResource("3_ctncq")
+script = ExtResource("4_2h7ou")
+
+[node name="PoliceLights2" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_7nha6")
+position = Vector2(10, -7)
+rotation = 3.14159
+scale = Vector2(0.11, 0.11)
+texture = ExtResource("3_ctncq")
+script = ExtResource("4_2h7ou")
