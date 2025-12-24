@@ -6,12 +6,12 @@ var player_ship = null
 
 func _ready():
 	# Get reference to main node to access planets and jumpgates
-	var main = get_tree().root.get_child(0)  # Assuming main is the root
+	var main = get_tree().root.get_child(1)
 	player_ship = main.player_ship
 	update_targets()
 
 func update_targets():
-	var main = get_tree().root.get_child(0)
+	var main = get_tree().root.get_child(1)
 	if main and main.current_star:
 		planets = main.current_star.planets
 		jumpgates = main.current_star.jumpgates

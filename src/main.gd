@@ -25,7 +25,7 @@ func _ready():
 	current_star = starmap.stars[0]
 	
 	# Get starmap display from scene
-	starmap_display = $CanvasLayer/StarmapDisplay
+	starmap_display = %StarmapDisplay
 	starmap_display.starmap = starmap
 	starmap_display.current_star = current_star
 	connect("star_changed", Callable(starmap_display, "set_current_star"))

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bw4xw53uc2q4j"]
+[gd_scene load_steps=11 format=3 uid="uid://bw4xw53uc2q4j"]
 
 [ext_resource type="Script" uid="uid://cka6ktdvikxhf" path="res://src/main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bd7frs73fri3b" path="res://src/PlayerShip.tscn" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cetf7pwu78qso" path="res://content/parallax_3.png" id="6_5mrjc"]
 [ext_resource type="Texture2D" uid="uid://1g6exyxktcwu" path="res://content/parallax_4.png" id="7_kf8lf"]
 [ext_resource type="Script" uid="uid://cbd3kbx0rcq7t" path="res://src/StarmapDisplay.gd" id="8"]
+[ext_resource type="Script" uid="uid://drgmfw1qrpfqx" path="res://src/DebugLog.gd" id="8_mgm53"]
 [ext_resource type="Script" uid="uid://c107ymevqqe2g" path="res://src/RadarDisplay.gd" id="9"]
 [ext_resource type="Script" uid="uid://klfmi2qvgnj1" path="res://src/NotificationSystem.gd" id="10"]
 
@@ -57,9 +58,24 @@ centered = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="StarmapDisplay" type="Node2D" parent="CanvasLayer"]
-position = Vector2(10, 10)
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 500.0
+grow_vertical = 2
+
+[node name="StarmapDisplay" type="Control" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
 script = ExtResource("8")
+
+[node name="DebugLog" type="RichTextLabel" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 500)
+layout_mode = 2
+scroll_following = true
+script = ExtResource("8_mgm53")
 
 [node name="RadarDisplay" type="Node2D" parent="CanvasLayer"]
 position = Vector2(500, 10)
