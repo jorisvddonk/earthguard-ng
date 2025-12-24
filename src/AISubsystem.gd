@@ -16,7 +16,7 @@ var memory_reader
 func _init(ship_node: Node, options: Dictionary = {}):
 	super._init(ship_node)
 	self.subsystem_type = "ai"
-	self.task = create_task(Task.TaskType.IDLE)
+	self.task = create_task(Task.TaskType.IDLE, Task.Goal.IDLE)
 	self.other_ships_hitting_me = {}
 	
 	var callbacks = {
@@ -45,7 +45,7 @@ func _on_taken_damage(data: Dictionary):
 		# Assume objectRegistry
 		var perpetrator = null  # get from registry
 		if perpetrator:
-			self.set_task(create_task(Task.TaskType.ATTACK, perpetrator))
+			self.set_task(create_task(Task.TaskType.ATTACK, Task.Goal.DESTROY, perpetrator))
 			# Notification
 
 func get_target():
@@ -62,7 +62,7 @@ func set_task(new_task):
 	# Emit signal
 
 func clear_task():
-	self.task = create_task(Task.TaskType.IDLE)
+	self.task = create_task(Task.TaskType.IDLE, Task.Goal.IDLE)
 
-func create_task(task_type, target = null):
-	return Task.new(task_type, target)
+func create_task(task_type, goal, target = null):
+	return Task.new(task_type, goal, target)

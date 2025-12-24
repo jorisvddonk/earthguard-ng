@@ -167,28 +167,26 @@ func set_next_task_for_ship(ship):
 		if current_star.planets.size() > 0:
 			var planet = current_star.planets[randi() % current_star.planets.size()]
 			var target = Target.new(Target.TargetType.GAMEOBJECT, planet)
-			task = Task.new(Task.TaskType.MOVE, target)
+			task = Task.new(Task.TaskType.MOVE, Task.Goal.TRADE, target)
 		else:
-			task = Task.new(Task.TaskType.IDLE)
+			task = Task.new(Task.TaskType.IDLE, Task.Goal.IDLE)
 	elif faction == "Pirates":
 		var target_ship = find_ship_of_faction("Civilians")
 		if target_ship:
 			var target = Target.new(Target.TargetType.SHIP, target_ship)
-			task = Task.new(Task.TaskType.ATTACK, target)
+			task = Task.new(Task.TaskType.ATTACK, Task.Goal.DESTROY, target)
 		else:
-			task = Task.new(Task.TaskType.IDLE)
+			task = Task.new(Task.TaskType.IDLE, Task.Goal.IDLE)
 	elif faction == "Police":
 		var target_ship = find_ship_of_faction("Pirates")
 		if target_ship:
 			var target = Target.new(Target.TargetType.SHIP, target_ship)
-			task = Task.new(Task.TaskType.ATTACK, target)
+			task = Task.new(Task.TaskType.ATTACK, Task.Goal.DESTROY, target)
 		else:
-			task = Task.new(Task.TaskType.IDLE)
+			task = Task.new(Task.TaskType.IDLE, Task.Goal.IDLE)
 	elif faction == "AnnoyingFan":
 		var target = Target.new(Target.TargetType.SHIP, player_ship)
-		task = Task.new(Task.TaskType.FOLLOW, target)
-	else:
-		task = Task.new(Task.TaskType.IDLE)
+		task = Task.new(Task.TaskType.FOLLOW, Task.Goal.ESCORT, target)
 	ai.set_task(task)
 
 func find_ship_of_faction(target_faction: String):
