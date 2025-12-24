@@ -9,6 +9,7 @@ var Starmap = load("res://src/Starmap.gd")
 var Planet = load("res://src/Planet.gd")
 var Jumpgate = load("res://src/Jumpgate.gd")
 var Ship = load("res://src/Ship.tscn")
+var PoliceShip = load("res://src/police_ship.tscn")
 var Task = load("res://src/Task.gd")
 var Target = load("res://src/Target.gd")
 var DirectionalIndicator = load("res://src/DirectionalIndicator.gd")
@@ -138,13 +139,17 @@ func spawn_random_ship():
 		"AnnoyingFan": "ship7"
 	}[faction]
 	
-	var ship_scene = Ship.instantiate()
+	var ship_scene
+	if faction == "Police":
+		ship_scene = PoliceShip.instantiate()
+	else:
+		ship_scene = Ship.instantiate()
 	ship_scene.faction = faction
 	ship_scene.position = Vector2(randf_range(-750, 750), randf_range(-750, 750))
 	ship_scene.velocity = Vector2(randf_range(-1.5, 3.5), randf_range(-1.5, 3.5))
-	
+
 	# Set graphics
-	if ship_scene.has_node("Sprite2D"):
+	if ship_scene.has_node("Sprite2D") and faction != "Police":
 		ship_scene.get_node("Sprite2D").texture = load("res://content/" + gfxID + ".png")
 	
 	add_child(ship_scene)
