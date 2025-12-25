@@ -68,14 +68,6 @@ func _ready():
 	indicator.script = DirectionalIndicator
 	player_ship.add_child(indicator)
 
-	# Add debug inventory label
-	var debug_label = Label.new()
-	debug_label.name = "DebugInventoryLabel"
-	debug_label.position = Vector2(10, 10)
-	debug_label.size = Vector2(300, 200)
-	debug_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	$CanvasLayer.add_child(debug_label)
-
 func _process(delta):
 	var mouse_pos = Vector2(get_viewport().get_mouse_position())
 	var camera = get_viewport().get_camera_2d()
@@ -94,22 +86,26 @@ func _process(delta):
 			if dist < min_dist:
 				hovered = child
 				min_dist = dist
-	var debug_label = $CanvasLayer/DebugInventoryLabel
+	var debug_label = %DebugInventoryLabel
 	if hovered:
 		var text = ""
 		if hovered.has_method("get_inventory"):
 			var inv = hovered.get_inventory()
-			text = "Inventory (Capacity: " + str(inv.get_total_items()) + "/" + str(hovered.cargo_capacity) + "):\n"
+			text += "Inventory (Capacity: " + str(inv.get_total_items()) + "/" + str(hovered.cargo_capacity) + "):\n"
 			for cat in Inventory.CATEGORIES:
 				var amt = inv.get_amount(cat)
 				if amt > 0:
 					text += cat + ": " + str(amt) + "\n"
-		elif hovered.has_method("get_supplies"):
-			text = "Supplies:\n"
+		if hovered.has_method("get_supplies"):
+			text += "Supplies:\n"
 			for cat in Inventory.CATEGORIES:
 				var amt = hovered.get_supplies().get(cat, 0)
 				if amt > 0:
 					text += cat + ": " + str(amt) + "\n"
+		if hovered.has_method("get_task"):
+			var tsk = hovered.get_task()
+			text += "Task:\n"
+			text += tsk._to_string()
 		debug_label.text = text
 	else:
 		debug_label.text = ""
