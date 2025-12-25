@@ -3,11 +3,12 @@ extends "res://src/BaseAutopilot.gd"
 class_name AutopilotV2
 
 var PIDController = load("res://src/PIDController.gd")
+var Ship = load("res://src/Ship.gd")
 
 const OFFSET_ALLOWED = 0.0872664626 # 5 degrees
 const OFFSET_ALLOWED_BACKWARDS = 0.436332313 # 25 degrees
 
-func _init(ship_node: Node, options: Dictionary = {}):
+func _init(ship_node: Ship, options: Dictionary = {}):
 	super._init(ship_node, options)
 	self.controllers.posXPID = PIDController.new(-0.45, -0.0, -80, -10, 10, -10, 10)
 	self.controllers.posYPID = PIDController.new(-0.45, -0.0, -80, -10, 10, -10, 10)
@@ -23,7 +24,12 @@ func tick(delta):
 		return
 	
 	if task.type == Task.TaskType.HALT:
-		brake(complete_func, delta)
+		var complete_halt = func():
+			emit_signal("complete")
+			GlobalSignals.debuglog.emit("Completing halt....")
+			var t = ship.subsystems.ai.create_task(Task.TaskType.IDLE, Task.Goal.IDLE)
+			ship.subsystems.ai.set_task(t)
+		brake(complete_halt, delta)
 		return
 	
 	var targetpos = target.get_target_position()
@@ -73,13 +79,14 @@ func move_to(targetpos: Vector2, delta):
 
 func brake(on_complete: Callable, delta):
 	var thrust_vec = ship.velocity.rotated(PI)
-	ship.rotate_(thrust_vec.angle())
-	
 	var thrust_angle = Vector2.UP.rotated(ship.rotation).angle_to(thrust_vec)
+	ship.rotate_(thrust_angle)
+	thrust_angle = Vector2.UP.rotated(ship.rotation).angle_to(thrust_vec)  # recalculate after rotation
+	
 	if thrust_angle < OFFSET_ALLOWED and thrust_angle > -OFFSET_ALLOWED:
 		var act_thrust = clamp(thrust_vec.length() * 500, -1, 1)
 		self.state.lthrust = act_thrust
 		ship.thrust(act_thrust, delta)
 	
-	if ship.velocity.length() < 0.05:
+	if ship.velocity.length() < 0.9:
 		on_complete.call()

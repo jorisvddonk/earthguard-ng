@@ -9,7 +9,8 @@ enum TaskType {
 	ATTACK,
 	MOVE,
 	IDLE,
-	HALT
+	HALT,
+	EVADE # not implemented yet
 }
 
 enum Goal {
@@ -33,3 +34,6 @@ func _init(task_type: TaskType, task_goal: Goal, task_target = null):
 	self.type = task_type
 	self.goal = task_goal
 	self.target = task_target
+
+func _to_string():
+	return "Task(%s, %s, %s)" % [TaskType.keys()[type], Goal.keys()[goal], target]
