@@ -121,12 +121,20 @@ func add_planets_and_jumpgates():
 		jumpgate.z_index = 0
 
 func spawn_ai_ships():
-	for i in range(30):
-		spawn_random_ship()
+	spawn_random_ship("Civilians")
+	spawn_random_ship("Pirates")
+	spawn_random_ship("Police")
+	spawn_random_ship("AnnoyingFan")
+	#for i in range(30):
+	#	spawn_random_ship()
 
-func spawn_random_ship():
+func spawn_random_ship(_faction=null):
 	var factions = ["Civilians", "Civilians", "Civilians", "Pirates", "Police", "Police", "AnnoyingFan"]
-	var faction = factions[randi() % factions.size()]
+	var faction
+	if _faction == null:
+		faction = factions[randi() % factions.size()]
+	else:
+		faction = _faction
 	
 	var gfxID = {
 		"Civilians": "ship2",

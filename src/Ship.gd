@@ -36,6 +36,7 @@ func _ready():
 	
 	# Initialize inventory
 	inventory = Inventory.new()
+	inventory.add_item("Credits", 1000, 1.0)  # Starting credits
 
 func get_subsystems() -> Dictionary:
 	return subsystems
@@ -102,17 +103,64 @@ func intercept(shooter: Vector2, bullet_speed: float, target: Vector2, target_ve
 func largest_root_of_quadratic_equation(a, b, c):
 	return (b + sqrt(b * b - 4 * a * c)) / (2 * a)
 
-func purchase_from_planet(planet: Planet, category: String, amount: int) -> bool:
-	if not Inventory.CATEGORIES.has(category):
+func buy_from_planet(planet: Planet, category: String, amount: int) -> bool:
+	if not Inventory.CATEGORIES.has(category) or category == "Credits":
 		return false
 	var available = planet.supplies.get(category, 0)
 	if available < amount:
 		return false
 	if not inventory.can_add(category, amount, cargo_capacity):
 		return false
+	var prices = planet.prices.get(category, {})
+	var price = prices.get("buy_price", 0)
+	var cost = price * amount
+	if inventory.get_amount("Credits") < cost:
+		return false
+	# Pay
+	inventory.remove_item("Credits", cost)
+	planet.supplies["Credits"] = planet.supplies.get("Credits", 0) + cost
+	# Transfer item
 	planet.supplies[category] -= amount
-	inventory.add_item(category, amount)
+	inventory.add_item(category, amount, price)
+	GlobalSignals.debuglog.emit("Bought %d %s for %d credits from %s" % [amount, category, cost, str(planet)])
+	return true
+
+func sell_to_planet(planet: Planet, category: String, amount: int) -> bool:
+	if not Inventory.CATEGORIES.has(category) or category == "Credits":
+		return false
+	if inventory.get_amount(category) < amount:
+		return false
+	var prices = planet.prices.get(category, {})
+	var price = prices.get("sell_price", 0)
+	var revenue = price * amount
+	# Transfer item
+	inventory.remove_item(category, amount)
+	planet.supplies[category] = planet.supplies.get(category, 0) + amount
+	# Receive credits
+	inventory.add_item("Credits", revenue, 1.0)
+	planet.supplies["Credits"] = planet.supplies.get("Credits", 0) - revenue
+	GlobalSignals.debuglog.emit("Sold %d %s for %d credits at %s" % [amount, category, revenue, str(planet)])
 	return true
 
 func get_inventory() -> Inventory:
 	return inventory
+
+func request_market_data_from_planet() -> Dictionary:
+	# Simulate radio call: get market data from all planets
+	var main = get_tree().root
+	if main is Window:
+		for child in main.get_children():
+			if child is Node2D:
+				main = child
+				break
+	var planets = main.current_star.planets
+	var market_data = {}
+	for planet in planets:
+		market_data[planet] = {
+			"prices": planet.get_prices(),
+			"supplies": planet.get_supplies()
+		}
+	return market_data
+	
+func get_task() -> Task:
+	return subsystems.ai.get_task()
