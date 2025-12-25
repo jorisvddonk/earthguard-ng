@@ -27,7 +27,7 @@ func tick(delta):
 		var complete_halt = func():
 			emit_signal("complete")
 			GlobalSignals.debuglog.emit("Completing halt....")
-			var t = ship.subsystems.ai.create_task(Task.TaskType.IDLE, Task.Goal.IDLE)
+			var t = ship.subsystems.ai.create_task(Task.TaskType.IDLE, task.goal)
 			ship.subsystems.ai.set_task(t)
 		brake(complete_halt, delta)
 		return
