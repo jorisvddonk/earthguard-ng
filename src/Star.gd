@@ -76,7 +76,9 @@ func _gen_planets():
 	n_planets = max(props["minPlanets"], int(n_planets))
 	var ret = []
 	for i in range(n_planets):
-		var planet = Planet.new()
+		var planet = Planet.new({
+			"name": phonetics.UGenerate("Socof")
+		})
 		ret.append(planet)
 	return ret
 
